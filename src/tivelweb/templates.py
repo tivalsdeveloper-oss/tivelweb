@@ -1,7 +1,10 @@
 """Ready-to-use website templates."""
 
+from html import escape
+
 from .components import hero, section
 from .site import Site
+from .styles import style_preset, theme_color
 
 
 NEWS_STYLE = """
@@ -69,3 +72,93 @@ def create_news_site(
     site.build()
     return site
 
+
+def create_portfolio_site(
+    name: str = "Your Name",
+    tagline: str = "Python developer and creative problem solver.",
+    output: str = "portfolio_website",
+    style: str = "midnight",
+) -> Site:
+    """Create a polished four-page developer portfolio."""
+    site = Site(name, theme_color=theme_color(style), output=output)
+    home = site.page("Home", "index.html", tagline)
+    home.add(style_preset(style))
+    home.add(hero(name, tagline, "View projects", "projects.html"))
+    features = (
+        '<div class="feature-grid">'
+        '<article class="feature-card"><span class="eyebrow">Python</span><h3>Useful libraries</h3><p>Create packages that solve real problems.</p></article>'
+        '<article class="feature-card"><span class="eyebrow">Web</span><h3>Responsive websites</h3><p>Build fast sites that work across devices.</p></article>'
+        '<article class="feature-card"><span class="eyebrow">AI</span><h3>Smart tools</h3><p>Experiment with practical local AI projects.</p></article>'
+        '</div>'
+    )
+    home.add(section("What I build", features, raw=True))
+    projects = site.page("Projects", "projects.html")
+    projects.add(style_preset(style))
+    projects.add(hero("Selected Projects", "A few things I have created."))
+    projects.add(section("Projects", features, raw=True))
+    site.page("About", "about.html").add(section("About Me", tagline))
+    site.page("Contact", "contact.html").add(section("Contact", "Add your email and social links here."))
+    site.build()
+    return site
+
+
+def create_business_site(
+    name: str = "Your Business",
+    description: str = "Reliable services for growing teams.",
+    output: str = "business_website",
+    style: str = "ocean",
+) -> Site:
+    """Create a professional small-business website."""
+    site = Site(name, theme_color=theme_color(style), output=output)
+    home = site.page("Home", "index.html", description)
+    home.add(style_preset(style))
+    home.add(hero(name, description, "Our services", "services.html"))
+    services_html = (
+        '<div class="feature-grid">'
+        '<article class="feature-card"><span class="eyebrow">Plan</span><h3>Consulting</h3><p>Clear guidance shaped around your goals.</p></article>'
+        '<article class="feature-card"><span class="eyebrow">Build</span><h3>Implementation</h3><p>Practical delivery from idea to launch.</p></article>'
+        '<article class="feature-card"><span class="eyebrow">Grow</span><h3>Support</h3><p>Ongoing help as your business develops.</p></article>'
+        '</div>'
+    )
+    home.add(section("Built for your next step", services_html, raw=True))
+    services = site.page("Services", "services.html")
+    services.add(style_preset(style))
+    services.add(hero("Our Services", "Flexible support for your business."))
+    services.add(section("What we offer", services_html, raw=True))
+    site.page("About", "about.html").add(section("About", description))
+    site.page("Contact", "contact.html").add(section("Start a conversation", "Add your contact details here."))
+    site.build()
+    return site
+
+
+def create_blog_site(
+    name: str = "My Blog",
+    author: str = "Your Name",
+    output: str = "blog_website",
+    style: str = "rose",
+) -> Site:
+    """Create a blog homepage with three editable sample articles."""
+    site = Site(name, theme_color=theme_color(style), output=output)
+    home = site.page("Home", "index.html", f"Articles and ideas by {author}.")
+    home.add(style_preset(style))
+    home.add(hero(name, f"Articles and ideas by {author}."))
+    posts = [
+        ("Starting my creative journey", "What I learned by beginning before I felt ready."),
+        ("How I organize a Python project", "A simple structure that keeps projects understandable."),
+        ("Lessons from building in public", "Why sharing progress can accelerate learning."),
+    ]
+    cards = []
+    for number, (title, summary) in enumerate(posts, 1):
+        path = f"post-{number}.html"
+        cards.append(
+            f'<article class="feature-card"><span class="eyebrow">Article {number}</span>'
+            f'<h3>{escape(title)}</h3><p>{escape(summary)}</p><a href="{path}">Read article →</a></article>'
+        )
+        post = site.page(f"Article {number}", path, summary)
+        post.add(style_preset(style))
+        post.add(hero(title, f"By {author}"))
+        post.add(section(title, summary + " Replace this text with your complete article."))
+    home.add(section("Latest writing", '<div class="feature-grid">' + "".join(cards) + "</div>", raw=True))
+    site.page("About", "about.html").add(section("About the author", f"This blog is written by {author}."))
+    site.build()
+    return site
