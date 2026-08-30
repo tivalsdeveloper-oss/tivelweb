@@ -10,4 +10,4 @@ __all__ = [
     "create_news_site", "create_portfolio_site", "create_business_site", "create_blog_site",
     "STYLE_PRESETS", "style_preset", "theme_color",
 ]
-__version__ = "0.3.0"
+__version__ = "0.4.0"
