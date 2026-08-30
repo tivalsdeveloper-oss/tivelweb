@@ -2,7 +2,16 @@ from pathlib import Path
 from tempfile import TemporaryDirectory
 import unittest
 
-from tivelweb import Site, create_news_site, hero
+from tivelweb import (
+    Site,
+    create_blog_site,
+    create_business_site,
+    create_news_site,
+    create_portfolio_site,
+    hero,
+    style_preset,
+    theme_color,
+)
 
 
 class SiteTests(unittest.TestCase):
@@ -21,6 +30,20 @@ class SiteTests(unittest.TestCase):
             self.assertTrue((Path(folder) / "index.html").exists())
             self.assertTrue((Path(folder) / "technology.html").exists())
             self.assertEqual(len(site.pages), 7)
+
+    def test_additional_templates(self):
+        builders = [create_portfolio_site, create_business_site, create_blog_site]
+        for builder in builders:
+            with self.subTest(builder=builder.__name__), TemporaryDirectory() as folder:
+                site = builder(output=folder)
+                self.assertTrue((Path(folder) / "index.html").exists())
+                self.assertGreaterEqual(len(site.pages), 4)
+
+    def test_style_presets(self):
+        self.assertEqual(theme_color("ocean"), "#087ea4")
+        self.assertIn("--preset-primary", style_preset("forest"))
+        with self.assertRaises(ValueError):
+            style_preset("missing")
 
 
 if __name__ == "__main__":
