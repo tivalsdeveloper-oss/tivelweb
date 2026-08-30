@@ -50,6 +50,24 @@ tivelweb serve dist
 - Static asset copying
 - Built-in local preview server
 - No runtime dependencies
+- Built-in responsive news website template
+
+## News website template
+
+```python
+from tivelweb import create_news_site
+
+site = create_news_site(
+    name="Tivals News",
+    output="news_website",
+    theme_color="#d71920",
+)
+```
+
+```bash
+python app.py
+tivelweb serve news_website
+```
 
 ## Test
 
@@ -60,4 +78,3 @@ python -m unittest discover -s tests
 ## License
 
 MIT
-
