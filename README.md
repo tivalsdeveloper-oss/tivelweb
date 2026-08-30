@@ -51,6 +51,8 @@ tivelweb serve dist
 - Built-in local preview server
 - No runtime dependencies
 - Built-in responsive news website template
+- Portfolio, business and blog templates
+- Ocean, sunset, forest, midnight and rose style presets
 
 ## News website template
 
@@ -67,6 +69,27 @@ site = create_news_site(
 ```bash
 python app.py
 tivelweb serve news_website
+```
+
+## More templates
+
+```python
+from tivelweb import create_portfolio_site, create_business_site, create_blog_site
+
+create_portfolio_site(name="Tivalsdeveloper", style="midnight")
+create_business_site(name="Tivals Digital", style="ocean")
+create_blog_site(name="Tivals Blog", author="Lufuno", style="rose")
+```
+
+## Style presets
+
+```python
+from tivelweb import Site, style_preset, theme_color
+
+site = Site("My Site", theme_color=theme_color("forest"))
+home = site.page("Home")
+home.add(style_preset("forest"))
+site.build()
 ```
 
 ## Test
