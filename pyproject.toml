@@ -17,9 +17,13 @@ classifiers = [
   "Operating System :: OS Independent",
 ]
 
+[project.urls]
+Homepage = "https://github.com/tivalsdeveloper-oss/tivelweb"
+Repository = "https://github.com/tivalsdeveloper-oss/tivelweb"
+Issues = "https://github.com/tivalsdeveloper-oss/tivelweb/issues"
+
 [project.scripts]
 tivelweb = "tivelweb.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
-
