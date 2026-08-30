@@ -53,6 +53,8 @@ tivelweb serve dist
 - Built-in responsive news website template
 - Portfolio, business and blog templates
 - Ocean, sunset, forest, midnight and rose style presets
+- Online or local background images with adjustable overlays
+- One-command build and preview with `Site.run()` or `serve=True`
 
 ## News website template
 
@@ -90,6 +92,34 @@ site = Site("My Site", theme_color=theme_color("forest"))
 home = site.page("Home")
 home.add(style_preset("forest"))
 site.build()
+```
+
+## Background image and automatic preview
+
+```python
+from tivelweb import create_portfolio_site
+
+create_portfolio_site(
+    name="Tivalsdeveloper",
+    tagline="Building websites, libraries and AI tools.",
+    style="midnight",
+    background_image="https://example.com/background.jpg",
+    serve=True,
+)
+```
+
+Now this single command builds, serves and opens the website:
+
+```bash
+python portfolio.py
+```
+
+For a custom site, call `site.run()` instead of `site.build()`:
+
+```python
+site = Site("My Site", background_image="background.jpg")
+site.page("Home")
+site.run()
 ```
 
 ## Test
