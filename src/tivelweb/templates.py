@@ -7,6 +7,14 @@ from .site import Site
 from .styles import style_preset, theme_color
 
 
+def _finish(site: Site, serve: bool, port: int) -> Site:
+    if serve:
+        site.run(port=port)
+    else:
+        site.build()
+    return site
+
+
 NEWS_STYLE = """
 <style>
 .breaking{background:#d71920;color:#fff;padding:12px 18px;border-radius:8px;font-weight:800}
@@ -47,9 +55,12 @@ def create_news_site(
     name: str = "Tivals News",
     output: str = "news_website",
     theme_color: str = "#d71920",
+    background_image: str = "",
+    serve: bool = False,
+    port: int = 8000,
 ) -> Site:
     """Create and build a responsive demonstration news website."""
-    site = Site(name, theme_color=theme_color, output=output)
+    site = Site(name, theme_color=theme_color, output=output, background_image=background_image)
     home = site.page("Home", "index.html", "Technology, business, sports and community news.")
     home.add(NEWS_STYLE)
     home.add(hero(name, "Technology, business, sports and community stories.", "Latest news", "#latest"))
@@ -69,8 +80,7 @@ def create_news_site(
     news = '<div id="latest" class="breaking">Welcome to the TivelWeb news template</div>'
     news += '<div class="news-grid">' + "".join(cards) + "</div>"
     home.add(section("Latest Stories", news, raw=True))
-    site.build()
-    return site
+    return _finish(site, serve, port)
 
 
 def create_portfolio_site(
@@ -78,9 +88,12 @@ def create_portfolio_site(
     tagline: str = "Python developer and creative problem solver.",
     output: str = "portfolio_website",
     style: str = "midnight",
+    background_image: str = "",
+    serve: bool = False,
+    port: int = 8000,
 ) -> Site:
     """Create a polished four-page developer portfolio."""
-    site = Site(name, theme_color=theme_color(style), output=output)
+    site = Site(name, theme_color=theme_color(style), output=output, background_image=background_image)
     home = site.page("Home", "index.html", tagline)
     home.add(style_preset(style))
     home.add(hero(name, tagline, "View projects", "projects.html"))
@@ -98,8 +111,7 @@ def create_portfolio_site(
     projects.add(section("Projects", features, raw=True))
     site.page("About", "about.html").add(section("About Me", tagline))
     site.page("Contact", "contact.html").add(section("Contact", "Add your email and social links here."))
-    site.build()
-    return site
+    return _finish(site, serve, port)
 
 
 def create_business_site(
@@ -107,9 +119,12 @@ def create_business_site(
     description: str = "Reliable services for growing teams.",
     output: str = "business_website",
     style: str = "ocean",
+    background_image: str = "",
+    serve: bool = False,
+    port: int = 8000,
 ) -> Site:
     """Create a professional small-business website."""
-    site = Site(name, theme_color=theme_color(style), output=output)
+    site = Site(name, theme_color=theme_color(style), output=output, background_image=background_image)
     home = site.page("Home", "index.html", description)
     home.add(style_preset(style))
     home.add(hero(name, description, "Our services", "services.html"))
@@ -127,8 +142,7 @@ def create_business_site(
     services.add(section("What we offer", services_html, raw=True))
     site.page("About", "about.html").add(section("About", description))
     site.page("Contact", "contact.html").add(section("Start a conversation", "Add your contact details here."))
-    site.build()
-    return site
+    return _finish(site, serve, port)
 
 
 def create_blog_site(
@@ -136,9 +150,12 @@ def create_blog_site(
     author: str = "Your Name",
     output: str = "blog_website",
     style: str = "rose",
+    background_image: str = "",
+    serve: bool = False,
+    port: int = 8000,
 ) -> Site:
     """Create a blog homepage with three editable sample articles."""
-    site = Site(name, theme_color=theme_color(style), output=output)
+    site = Site(name, theme_color=theme_color(style), output=output, background_image=background_image)
     home = site.page("Home", "index.html", f"Articles and ideas by {author}.")
     home.add(style_preset(style))
     home.add(hero(name, f"Articles and ideas by {author}."))
@@ -160,5 +177,4 @@ def create_blog_site(
         post.add(section(title, summary + " Replace this text with your complete article."))
     home.add(section("Latest writing", '<div class="feature-grid">' + "".join(cards) + "</div>", raw=True))
     site.page("About", "about.html").add(section("About the author", f"This blog is written by {author}."))
-    site.build()
-    return site
+    return _finish(site, serve, port)
